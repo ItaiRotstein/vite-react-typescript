@@ -1,6 +1,6 @@
-import { Col, Row } from 'react-bootstrap'
-import StoreItems from '../data/items.json'
-import StoreItem from '../components/StoreItem'
+import { Col, Row } from 'react-bootstrap';
+import StoreItems from '../data/items.json';
+import StoreItem from '../components/StoreItem';
 
 const Store = () => {
   return (
@@ -10,10 +10,10 @@ const Store = () => {
         {StoreItems.map(item => (
           <Col key={item.id}>
             <StoreItem {...item} />
-            </Col>
+          </Col>
         ))}
       </Row>
     </>
-  )
-}
-export default Store
+  );
+};
+export default Store;

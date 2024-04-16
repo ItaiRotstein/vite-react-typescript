@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { Button, Card } from 'react-bootstrap';
 import { formatCurrency } from '../utilities/formatCurrency';
 import { useShoppingCart } from '../context/ShoppingCartContext';
@@ -20,7 +22,7 @@ const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
   const quantity = getItemQuantity(id);
 
   return (
-    <Card className='h-100 shadow-sm'>
+    <Card className='h-100 shadow-sm' as={Link} to={`/item/${id}`} style={{ textDecoration: 'none' }}>
       <Card.Img
         variant='top'
         src={imgUrl}
@@ -33,26 +35,45 @@ const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
         <span className='ms-2 text-muted'>{formatCurrency(price)}</span>
       </Card.Title>
       <div className="mt-auto">
-        {quantity === 0 ? (<Button className='w-100' onClick={() => increaseCartQuantity(id)}>+ Add To Cart</Button>
-        ) : (
-          <div className='d-flex align-items-center flex-column' style={{ gap: '.5rem' }}>
-            <div className='d-flex align-items-center justify-content-center' style={{ gap: '.5rem' }}>
-              <Button onClick={() => decreaseCartQuantity(id)}>-</Button>
-              <div className="fs-2">
-                <span>{quantity}</span>
+        {quantity === 0 ?
+          (<Button className='w-100' onClick={(e) => {
+            e.preventDefault();
+            increaseCartQuantity(id);
+          }}>
+            + Add To Cart
+          </Button>
+          ) : (
+            <div className='d-flex align-items-center flex-column' style={{ gap: '.5rem' }}>
+              <div className='d-flex align-items-center justify-content-center' style={{ gap: '.5rem' }}>
+                <Button onClick={(e) => {
+                  e.preventDefault();
+                  decreaseCartQuantity(id);
+                }}>
+                  -
+                </Button>
+                <div className="fs-2">
+                  <span>{quantity}</span>
+                </div>
+                <Button onClick={(e) => {
+                  e.preventDefault();
+                  increaseCartQuantity(id);
+                }}>
+                  +
+                </Button>
               </div>
-              <Button onClick={() => increaseCartQuantity(id)}>+</Button>
+              <Button
+                variant='danger'
+                size='sm'
+                className='mb-2'
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeFromCart(id);
+                }}
+              >
+                Remove
+              </Button>
             </div>
-            <Button
-              variant='danger'
-              size='sm'
-              className='mb-2'
-              onClick={() => removeFromCart(id)}
-            >
-              Remove
-            </Button>
-          </div>
-        )}
+          )}
       </div>
     </Card>
   );
